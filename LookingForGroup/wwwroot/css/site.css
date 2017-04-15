@@ -35,3 +35,15 @@ textarea {
         display: none;
     }
 }
+
+.centerSmall {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.centerLarge {
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}

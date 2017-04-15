@@ -1,0 +1,59 @@
+@model IEnumerable<Looking4Group.Models.Question>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DefaultQuestion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Answer1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Answer2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Answer3)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Answer4)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DefaultQuestion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Answer1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Answer2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Answer3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Answer4)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.QuestionID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.QuestionID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.QuestionID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

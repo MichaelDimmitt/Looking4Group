@@ -27,7 +27,6 @@ namespace LookingForGroup
         {
             // Add framework services.
             services.AddDbContext<Looking4GroupContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddMvc();
         }
 

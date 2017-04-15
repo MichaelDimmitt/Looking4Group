@@ -1,0 +1,49 @@
+@model Looking4Group.Models.User
+
+@{
+    ViewData["Title"] = "Index";
+}
+<br />
+@using (Html.BeginForm())
+{
+<div class="centerSmall">
+    <table>
+        <tr>
+            <th colspan="2" style="text-align:center"><h3>Login</h3></th>
+            
+        </tr>
+        <tr>
+            <td style="padding-right:10px;">
+                <label asp-for="Username"></label>
+            </td>
+            <td>
+                <input asp-for="Username" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </td>
+            <td rowspan="2" style="padding-left:10px;">
+                <span class="text-danger">@ViewBag.ErrorMessage</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Password"></label>
+            </td>
+            <td>
+                <input asp-for="Password" type="password"/>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center; padding-left:70px;">
+                <br /><input type="submit" name="Login" value="Login" class="btn btn-default" /> or <a asp-action="Register" style="text-align:center">Register</a>
+                
+            </td>
+        </tr>
+    </table>
+</div>
+}
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

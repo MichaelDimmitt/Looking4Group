@@ -13,15 +13,12 @@ namespace Looking4Group.Data
         public DbSet<GameTag> GameTags { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupTag> GroupTags { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<QuestionTag> QuestionTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<User>().ToTable("User");
-            //modelBuilder.Entity<UserTag>().ToTable("UserTag");
-            //modelBuilder.Entity<Game>().ToTable("Game");
-            //modelBuilder.Entity<GameTag>().ToTable("GameTag");
-            //modelBuilder.Entity<Group>().ToTable("Group");
-            //modelBuilder.Entity<GroupTag>().ToTable("GroupTag");
+               
         }
     }
 }

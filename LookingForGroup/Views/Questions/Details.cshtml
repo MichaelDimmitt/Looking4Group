@@ -1,0 +1,54 @@
+@model Looking4Group.Models.Question
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Question</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DefaultQuestion)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DefaultQuestion)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Answer1)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Answer1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Answer2)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Answer2)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Answer3)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Answer3)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Answer4)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Answer4)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.QuestionID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
