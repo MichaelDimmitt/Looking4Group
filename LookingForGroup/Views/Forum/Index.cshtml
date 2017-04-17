@@ -1,0 +1,14 @@
+@model Looking4Group.Models.Forum
+@using Looking4Group.Models;
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="centerLarge">
+    <h1>@Model.Name</h1>
+    <p>@Model.Description</p>
+    @foreach(Discussion d in Model.Discussions)
+    {
+        
+    }
+</div>

@@ -1,18 +1,21 @@
+using Looking4Group.Data;
+using Looking4Group.Libraries;
+using Looking4Group.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Looking4Group.Data;
-using Looking4Group.Models;
+
+
 using BCrypt.Net;
+using System.Collections.Generic;
 
 namespace Looking4Group.Controllers
 {
     public class LoginController : Controller
     {
+        public String SelectedAnswer { get; set; }
+
         private readonly Looking4GroupContext _context;
 
         public LoginController(Looking4GroupContext context)
@@ -37,7 +40,7 @@ namespace Looking4Group.Controllers
                 {
                     if (ValidateUser(user))
                     {
-                        return View("Questions");
+                        return RedirectToAction("Index", "Home");
                     }
                     ViewBag.ErrorMessage = "The user name or password provided is incorrect.";
                     return View(user);
@@ -67,25 +70,82 @@ namespace Looking4Group.Controllers
                     //Generate salt and hash password for storage
                     user.PasswordSalt = BCrypt.Net.BCrypt.GenerateSalt();
                     user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password, user.PasswordSalt);
-
+                    user.UserTags = new List<UserTag>();
                     _context.Add(user);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Index");
+                    HttpContext.Session.Set("UserID", BitConverter.GetBytes(user.UserID));
+                    return View("Questions");
                 }
                 ViewBag.ErrorMessage = "The user name you selected has already been taken.";
             }
             return View(user);
         }
 
-        // GET: Login/Create
-        public async Task<IActionResult> Questions()
+        public IActionResult Logout()
         {
-            return View(await _context.Questions.ToListAsync());
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
-        private bool UserExists(int id)
+        public IActionResult Account()
         {
-            return _context.Users.Any(e => e.UserID == id);
+            return View(Globals.GetUser(_context, HttpContext));
+        }
+
+        // GET: Login/Create
+        public IActionResult Questions()
+        {
+            var questions = _context.Questions.Where(q => q.DefaultQuestion == true).ToList();
+            HttpContext.Session.Set("State", BitConverter.GetBytes(0));
+            return View(questions);
+        }
+
+        [HttpPost, ActionName("Questions")]
+        public IActionResult BeginQuestions()
+        {
+            var questions = _context.Questions.Where(q => q.DefaultQuestion == true).ToList();
+
+            //Get current page state
+            int state = 0;
+            byte[] outVal;
+            if (HttpContext.Session.TryGetValue("State", out outVal))
+            {
+                state = BitConverter.ToInt32(outVal, 0);
+            } else
+            {
+                HttpContext.Session.Set("State", BitConverter.GetBytes(state));
+            }
+            
+
+            //If an answer was submitted add it to the user
+            int answerNumber;
+            if(Int32.TryParse(Request.Form["answer"], out answerNumber))
+            {
+                //Get get user
+                byte[] idOutVal;
+                HttpContext.Session.TryGetValue("UserID", out idOutVal);
+                int userID = BitConverter.ToInt32(idOutVal, 0);
+                User user = _context.Users.SingleOrDefault(u => u.UserID == userID);
+
+                //Create new user tag
+                List<QuestionTag> tags = _context.QuestionTags.Where(qt => qt.QuestionID == questions[state-1].QuestionID).ToList();
+                //Ensure we don't get an out of bounds error
+                if (answerNumber < tags.Count)
+                {
+                    UserTag tag = new UserTag { Label = tags[answerNumber].Label, Weight = 80, UserID = userID };
+                    _context.UserTags.Add(tag);
+                    _context.SaveChanges();
+
+                    //Add user tag to the user
+                    user.UserTags.Add(tag);
+                    _context.Users.Update(user);
+                    _context.SaveChanges();
+                }
+            }
+ 
+            HttpContext.Session.Set("State", BitConverter.GetBytes(++state));
+
+            return View(questions);
         }
 
         private bool ValidateUser(User clientUser)
@@ -105,6 +165,6 @@ namespace Looking4Group.Controllers
             }
 
             return false;
-        }
+        }//end Validate User
     }
 }

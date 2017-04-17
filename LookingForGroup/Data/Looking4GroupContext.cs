@@ -20,5 +20,7 @@ namespace Looking4Group.Data
         {
                
         }
+
+        public DbSet<Looking4Group.Models.Forum> Forum { get; set; }
     }
 }

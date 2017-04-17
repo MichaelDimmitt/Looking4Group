@@ -1,0 +1,22 @@
+@model Looking4Group.Models.Game
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="centerLarge">
+    @if (Model != null)
+    {
+        <h1>Top Game result for you:</h1>
+        <h3><a asp-action="Game" asp-route-id="@Model.GameID">@Model.Name</a></h3>
+        @Model.Description
+    } else
+    {
+        <h1>Please Login to see customized search results!</h1>
+        <h3>Custom search is under construction!</h3>
+    }
+
+
+
+
+</div>

@@ -1,59 +1,75 @@
-@model IEnumerable<Looking4Group.Models.Question>
+@model IList<Looking4Group.Models.Question>
+@using Microsoft.AspNetCore.Http;
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.DefaultQuestion)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Answer1)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Answer2)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Answer3)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Answer4)
-                </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DefaultQuestion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Answer1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Answer2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Answer3)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Answer4)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.QuestionID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.QuestionID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.QuestionID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="centerLarge">
+    @{ 
+        int state = 0;
+        byte[] outValTest;
+        if(Context.Session.TryGetValue("State", out outValTest))
+        {
+            state = BitConverter.ToInt32(outValTest, 0);
+        } 
+    }
+    @if (state == 0)
+    {
+        <h3>Thanks for registering! Before you being please fill out this quick survey so that we can better match you with groups/games.</h3>
+        <form asp-action="Questions">
+            <input type="submit" value="Begin" class="btn btn-default" />
+        </form>
+    }
+    else if (state == 1)
+    {
+        <h1>Question 1 of 4</h1>
+        <h4>@Html.DisplayFor(modelItem => Model[0].Title)</h4>
+        <form asp-action="Questions">
+            <input type="radio" name="answer" value="0" />@Model[0].Answer1<br />
+            <input type="radio" name="answer" value="1" />@Model[0].Answer2<br />
+            <input type="radio" name="answer" value="2" />@Model[0].Answer3<br />
+            <input type="radio" name="answer" value="3" />@Model[0].Answer4<br />
+            <input type="submit" value="Next" class="btn btn-default" />
+        </form>
+    }
+    else if (state == 2)
+    {
+        <h1>Question 2 of 4</h1>
+        <h4>@Html.DisplayFor(modelItem => Model[1].Title)</h4>
+        <form asp-action="Questions">
+            <input type="radio" name="answer" value="0" />@Model[1].Answer1<br />
+            <input type="radio" name="answer" value="1" />@Model[1].Answer2<br />
+            <input type="radio" name="answer" value="2" />@Model[1].Answer3<br />
+            <input type="radio" name="answer" value="3" />@Model[1].Answer4<br />
+            <input type="submit" value="Next" class="btn btn-default" />
+        </form>
+    }
+    else if (state == 3)
+    {
+        <h1>Question 3 of 4</h1>
+        <h4>@Html.DisplayFor(modelItem => Model[2].Title)</h4>
+        <form asp-action="Questions">
+            <input type="radio" name="answer" value="0" />@Model[2].Answer1<br />
+            <input type="radio" name="answer" value="1" />@Model[2].Answer2<br />
+            <input type="radio" name="answer" value="2" />@Model[2].Answer3<br />
+            <input type="radio" name="answer" value="3" />@Model[2].Answer4<br />
+            <input type="submit" value="Next" class="btn btn-default" />
+        </form>
+    }
+    else if (state == 4)
+    {
+        <h1>Question 4 of 4</h1>
+        <h4>@Html.DisplayFor(modelItem => Model[3].Title)</h4>
+        <form asp-action="Questions">
+            <input type="radio" name="answer" value="0" />@Model[3].Answer1<br />
+            <input type="radio" name="answer" value="1" />@Model[3].Answer2<br />
+            <input type="radio" name="answer" value="2" />@Model[3].Answer3<br />
+            <input type="radio" name="answer" value="3" />@Model[3].Answer4<br />
+            <input type="submit" value="Next" class="btn btn-default" />
+        </form>
+    }
+    else
+    {
+        <h3>Great! Now that we know a little bit about you can get started! Have fun!</h3>
+        <form asp-action="Questions">
+            <input type="submit" value="Find a Group" class="btn btn-default" asp-controller="GroupSearch" asp-action="Index"/> | <input type="submit" value="Find a Game" class="btn btn-default" asp-controller="GameSearch" asp-action="Index"/>
+        </form>
+    }
+</div>

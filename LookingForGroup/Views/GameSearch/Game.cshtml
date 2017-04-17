@@ -1,0 +1,9 @@
+﻿@model Looking4Group.Models.Game
+
+@{
+    ViewData["Title"] = "Game";
+}
+
+<h1>@Model.Name</h1>
+<p>@Model.Description</p>
+@Html.ActionLink("More Info/Buy", "Info", "GameSearch", Model)

@@ -1,0 +1,9 @@
+@model Looking4Group.Models.Group
+
+@{ 
+    ViewData["Title"] = "Group";
+}
+
+<h1>@Model.Name</h1>
+<p>@Model.Description</p>
+@Html.ActionLink("Website", "Info", "GroupSearch", Model)

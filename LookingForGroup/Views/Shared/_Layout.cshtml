@@ -34,8 +34,24 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Games</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Groups</a></li>
+                    <li><a asp-area="" asp-controller="GameSearch" asp-action="Index">Find Games</a></li>
+                    <li><a asp-area="" asp-controller="GroupSearch" asp-action="Index">Find Groups</a></li>
+                    <li><a>Forum</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @{
+                        //See if we are logged in
+                        byte[] outVal;
+                        if (Context.Session.TryGetValue("UserID", out outVal))
+                        {
+                            <li><a asp-area="" asp-controller="Login" asp-action="Account">Account</a></li>
+                            <li><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
+                        } else
+                        {
+                            <li><a asp-area="" asp-controller="Login" asp-action="Index">Login</a></li>
+                            <li><a asp-area="" asp-controller="Login" asp-action="Register">Register</a></li>
+                        }
+                    }
                 </ul>
             </div>
         </div>
